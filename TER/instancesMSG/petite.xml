@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<MSG>
+	<listeMSC>
+		<MSC>
+			<id>1</id><listeActions>
+				<action type="emission">
+					<source>1</source>
+					<destination>2</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>2</id><listeActions>
+				<action type="emission">
+					<source>2</source>
+					<destination>1</destination>
+				</action>
+			</listeActions>
+			</MSC>
+	</listeMSC>
+	<listeArcs>
+		<arc>
+			<domaine>1</domaine>
+			<codomaine>2</codomaine></arc>
+		<arc>
+			<domaine>2</domaine>
+			<codomaine>1</codomaine></arc></listeArcs></MSG>

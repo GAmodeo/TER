@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<MSG>
+	<listeMSC>
+		<MSC>
+			<listeActions>
+				<action type="emission">
+					<source>1</source>
+					<destination>2</destination>
+				</action>
+				<action type="reception">
+					<source>1</source>
+					<destination>2</destination>
+				</action>
+			</listeActions>
+		</MSC>
+		<MSC>
+			<listeActions>
+				<action type="emission">
+					<source>1</source>
+					<destination>2</destination>
+				</action>
+				<action type="reception">
+					<source>1</source>
+					<destination>2</destination>
+				</action>
+			</listeActions>
+		</MSC>
+	</listeMSC>
+</MSG>

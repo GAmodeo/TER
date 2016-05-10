@@ -1,0 +1,33 @@
+c Problem:    
+c Rows:       14
+c Columns:    10
+c Non-zeros:  29
+c Status:     INFEASIBLE (FINAL)
+c Objective:  z = 0 (MINimum)
+c
+s bas 14 10 n f 0
+i 1 b 0 0
+i 2 b 0 0
+i 3 b 0 0
+i 4 b 0 0
+i 5 b 0 0
+i 6 b 0 0
+i 7 b 0 0
+i 8 b 0 0
+i 9 b 0 0
+i 10 b 0 0
+i 11 b 0 0
+i 12 b 0 0
+i 13 b 0 0
+i 14 b 0 0
+j 1 l 0 1
+j 2 l 0 1
+j 3 l 0 1
+j 4 l 0 1
+j 5 l 0 0
+j 6 l 0 0
+j 7 l 0 0
+j 8 l 0 0
+j 9 l 0 0
+j 10 s 0 0
+e o f
