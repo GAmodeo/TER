@@ -2,10 +2,8 @@ package sat;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 
-import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.reader.DimacsReader;
 import org.sat4j.reader.ParseFormatException;
@@ -20,13 +18,18 @@ import main.MSG;
 public class Solveur {
 	private MSG msg;
 	private FabriqueDeClauses fabriqueDeClauses;
+	private ArrayList<String> modelesDivergence;
+	long timeDiv;
 	
 	public Solveur(MSG msg){
 		this.setMsg(msg);
 		this.fabriqueDeClauses=new FabriqueDeClauses(this.getMsg());
+		modelesDivergence =new ArrayList<String>();
+		this.timeDiv=0;
 	}
+	
 
-	public void verifierDivergence(){
+	public ArrayList<String> verifierDivergence(){
 		//on a nbarcs + nbInstances comme nombres de vars
 		final int nbvar = msg.getNbArcs()+msg.getInstances().size();
 
@@ -41,6 +44,7 @@ public class Solveur {
 		//on va interroger SAT pour chaque instance j
 		
 		int nbCanauxDivergents=0;
+		long time1=System.nanoTime();
 		for(int j=0;j<msg.getInstances().size();j++){
 			Instance instanceJ=msg.getInstances().get(j);
 			
@@ -62,17 +66,14 @@ public class Solveur {
 				ScribeDeClauses.ecrireClauses("output.cnf",concat2,nbvar,concat2.size());
 				
 				//this.show(concat2);
-				if(this.verifierSAT()>0){
-					nbCanauxDivergents++;
-				}
+				
+				verifierSAT(instanceI,instanceJ);
+
 			}
 		}
-		if(nbCanauxDivergents == 0){
-			System.out.println("Solveur SAT : Pas de divergence detectee");
-		}
-		else{
-			System.out.println("Solveur SAT : "+nbCanauxDivergents+" canaux divergents detectes");
-		}
+		long time2=System.nanoTime();
+		this.timeDiv+=(time2-time1)/1000000;
+		return this.modelesDivergence;
 
 	}
 	
@@ -90,7 +91,7 @@ public class Solveur {
 		
 	}
 
-	private int verifierSAT() {
+	private int verifierSAT(Instance instanceI, Instance instanceJ) {
 		ISolver solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
         DimacsReader reader = new DimacsReader(solver);
@@ -100,10 +101,15 @@ public class Solveur {
         int nbModeles = 0;
         try {
             IProblem problem = reader.parseInstance("output.cnf");
-            if (problem.isSatisfiable()) {
-                System.out.println("Satisfiable !");
-                System.out.println(reader.decode(problem.model()));
-                nbModeles++;
+            
+            
+            Boolean satisfiable=problem.isSatisfiable();
+                
+       
+            if (satisfiable) {
+            	
+                this.modelesDivergence.add(instanceI.getId()+" "+instanceJ.getId()+" "+reader.decode(problem.model()));
+                
             } else {
                 
             }
@@ -121,7 +127,9 @@ public class Solveur {
         return nbModeles;
 	}
 
-
+	public long getTimeDiv(){
+		return this.timeDiv;
+	}
 
 
 	public MSG getMsg() {

@@ -1,5 +1,7 @@
 package pl;
 
+import java.util.ArrayList;
+
 import org.gnu.glpk.GLPK;
 import org.gnu.glpk.GLPKConstants;
 import org.gnu.glpk.SWIGTYPE_p_double;
@@ -15,15 +17,17 @@ import main.MSG;
 public class SolveurLineaire {
 	private MSG msg;
 	private int compteurCDivergents;
+	private ArrayList<String> modelesDivergence;
 	
 	public SolveurLineaire(MSG msg){
 		this.setMsg(msg);
 		this.setCompteurCDivergents(0);
+		this.modelesDivergence=new ArrayList<String>();
 		
 		GLPK.glp_term_out(GLPK.GLP_OFF);
 	}
 	
-	public void verifierDivergence(){
+	public ArrayList<String> verifierDivergence(){
 		
 		glp_prob lp;
         SWIGTYPE_p_int ind;
@@ -64,15 +68,9 @@ public class SolveurLineaire {
     	            definirNouveauLp(nouveauLp,i,j);
     				}
     		} 
-    		if(this.getCompteurCDivergents()==0){
-    			System.out.println("le solveur lineaire n'a pas detecte de divergence");
-    			
-    		}
-    		else{
-    			System.out.println("le solveur lineaire a detecte "+this.getCompteurCDivergents()+" canaux divergents");
-    		}
+
     	
-	
+    		return modelesDivergence;
 	}
 	
 
@@ -103,7 +101,7 @@ public class SolveurLineaire {
 	    
 	//  Retrieve solution
 	    if (ret == 0) {
-	      write_mip_solution(nouveauLp);
+	      write_mip_solution(nouveauLp,i,j);
 	    }
 	    else {
 	      //System.out.println("The problem could not be solved"+ret);
@@ -265,9 +263,9 @@ public class SolveurLineaire {
 			//le nom des va
 	        GLPK.glp_set_col_name(lp, numColonne(arc), "a"+arc);
 	        //continuous variables
-	        GLPK.glp_set_col_kind(lp,  numColonne(arc), GLPKConstants.GLP_CV);
+	        GLPK.glp_set_col_kind(lp,  numColonne(arc), GLPKConstants.GLP_BV);
 	        //double bounded entre 0 et 0.5
-	        GLPK.glp_set_col_bnds(lp,  numColonne(arc), GLPKConstants.GLP_DB, 0, .5);
+	        //GLPK.glp_set_col_bnds(lp,  numColonne(arc), GLPKConstants.GLP_DB, 0, .5);
 		}
 		for(Instance instance : msg.getInstances()){ 
 
@@ -281,10 +279,10 @@ public class SolveurLineaire {
 
 		
 	}
-	  void write_mip_solution(glp_prob lp) {
-		  	int i;
+	  void write_mip_solution(glp_prob lp, Instance i, Instance j) {
+		  	int in;
 		    int n;
-		    String name;
+		    String sol=new String();
 		    double val;
 		    
 		    /*name = GLPK.glp_get_obj_name(lp);
@@ -293,16 +291,21 @@ public class SolveurLineaire {
 		    System.out.print(" = ");
 		    System.out.println(val);*/
 		    n = GLPK.glp_get_num_cols(lp);
-		    for(i=1; i < n; i++)
+		    
+		    sol=sol.concat(i.getId()+" "+j.getId());
+		    for(in=1; in < n; in++)
 		    {
+		    	/*
 		      name = GLPK.glp_get_col_name(lp, i);
 		      val  = GLPK.glp_mip_col_val(lp, i);
 		      System.out.print(i);
 		      System.out.print("=");
-		      System.out.print(val+"  ");
+		      System.out.print(val+"  ");*/
+		      
+		      sol=sol.concat(" "+ GLPK.glp_mip_col_val(lp, in));
 		    }
 		  
-		System.out.println();
+		this.modelesDivergence.add(sol);
 		
 		/*if(GLPK.glp_get_prim_stat(lp) == GLPK.GLP_FEAS){
 			System.out.println("NEVERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");

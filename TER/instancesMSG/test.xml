@@ -13,7 +13,7 @@
 		<MSC>
 			<id>2</id><listeActions>
 				<action type="emission">
-					<source>1</source>
+					<source>3</source>
 					<destination>2</destination>
 				</action>
 				<action type="reception">
