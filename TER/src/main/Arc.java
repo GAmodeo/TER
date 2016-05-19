@@ -13,6 +13,9 @@ public class Arc {
 	public MSC getDomaine() {
 		return domaine;
 	}
+	public boolean contient(int i,int j){
+		return (this.getCodomaine().contient(i, j) || this.getDomaine().contient(i, j));			
+	}
 	
 	public void setDomaine(MSC domaine) {
 		this.domaine = domaine;

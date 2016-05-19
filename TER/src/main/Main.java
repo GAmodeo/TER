@@ -18,19 +18,19 @@ public class Main {
 
 		Solveur solveur=new Solveur(msg);
 		SolveurLineaire SLN=new SolveurLineaire(msg);
-		//msg.show();
 		
+		//msg.show();
 		//solutionsSAT=solveur.verifierDivergence();	
-		//ecrireSolutionSATDiv(solutionsSAT,msg);
-				
+		//ecrireSolutionSATDiv(solutionsSAT,msg);ù			
 		//SLN.verifierDivergence();
 		
-		ThreadSolveur threadSAT=new ThreadSolveur("SAT",msg,solveur,SLN);
-		ThreadSolveur threadLN=new ThreadSolveur("LN",msg,solveur,SLN);
+		ThreadSolveur threadSAT=new ThreadSolveur("SAT",msg,solveur,SLN,"Nonrapide");
+		ThreadSolveur threadLN=new ThreadSolveur("LN",msg,solveur,SLN,"Nonrapide");
 		
 		threadSAT.start();
 		threadLN.start();
-		
+
+	
 	}
 
 
@@ -68,6 +68,16 @@ public class Main {
 			}
 			System.out.println("**************************************");
 			System.out.println("**************************************");
+		}
+	}
+
+
+	public static void ecrireSolutionDiv(String solution, MSG msg, long tempsRapide) {
+		// TODO Auto-generated method stub
+		System.out.println("Solveur rapide SAT :temps de resolution : "+tempsRapide);
+		
+		if(solution.equals("oui")){
+			System.out.println("satisfiable");
 		}
 	}
 	

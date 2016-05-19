@@ -12,17 +12,23 @@ public class ThreadSolveur extends Thread{
 	MSG msg;
 	Solveur solveur;
 	SolveurLineaire SLN;
+	String vitesse;
 	
-	public ThreadSolveur(String mode,MSG msg,Solveur solveur,SolveurLineaire SLN){
-		this.mode=mode;this.msg=msg;this.solveur=solveur;this.SLN=SLN;
+	public ThreadSolveur(String mode,MSG msg,Solveur solveur,SolveurLineaire SLN,String vitesse){
+		this.mode=mode;this.msg=msg;this.solveur=solveur;this.SLN=SLN;this.vitesse=vitesse;
 	}
 	
 	public void run(){
 		if(mode.equals("SAT")){
+			if(vitesse.equals("rapide")){
+				String solution=solveur.verifierDivergenceRapide();
+				Main.ecrireSolutionDiv(solution,msg,solveur.getTempsRapide());
+				return;
+			}
 			long time1=System.nanoTime();
 			ArrayList<String> solutionsSAT=solveur.verifierDivergence();
 			long time2=System.nanoTime();
-			Main.ecrireSolutionDiv(solutionsSAT,msg,"SAT",(time2-time1)/1000000000);
+			Main.ecrireSolutionDiv(solutionsSAT,msg,"SAT",(time2-time1)/1000000);
 			
 		}
 		else{
@@ -30,7 +36,7 @@ public class ThreadSolveur extends Thread{
 			ArrayList<String> solutionsLN=SLN.verifierDivergence();
 			long time2=System.nanoTime();
 			
-			Main.ecrireSolutionDiv(solutionsLN, msg,"LN",(time2-time1)/1000000000);			
+			Main.ecrireSolutionDiv(solutionsLN, msg,"LN",(time2-time1)/1000000);			
 		}
 	}
 }

@@ -18,12 +18,13 @@ public class SolveurLineaire {
 	private MSG msg;
 	private int compteurCDivergents;
 	private ArrayList<String> modelesDivergence;
+	private long tempsDiv;
 	
 	public SolveurLineaire(MSG msg){
 		this.setMsg(msg);
 		this.setCompteurCDivergents(0);
 		this.modelesDivergence=new ArrayList<String>();
-		
+		this.tempsDiv=0;
 		GLPK.glp_term_out(GLPK.GLP_OFF);
 	}
 	
@@ -69,7 +70,7 @@ public class SolveurLineaire {
     				}
     		} 
 
-    	
+    		this.tempsDiv=this.tempsDiv/1000000;
     		return modelesDivergence;
 	}
 	
@@ -95,9 +96,12 @@ public class SolveurLineaire {
 	    iocp = new glp_iocp();
 	    GLPK.glp_init_iocp(iocp);
 	    iocp.setPresolve(GLPKConstants.GLP_ON);
-	  GLPK.glp_write_lp(nouveauLp, null, "solutionLP");
-	    ret = GLPK.glp_intopt(nouveauLp, iocp);
+	    GLPK.glp_write_lp(nouveauLp, null, "solutionLP");
 	    
+	    long t1=System.nanoTime();
+	    ret = GLPK.glp_intopt(nouveauLp, iocp);
+	    long t2=System.nanoTime();
+	    this.tempsDiv=this.tempsDiv+(t2-t1);
 	    
 	//  Retrieve solution
 	    if (ret == 0) {
@@ -340,5 +344,10 @@ public class SolveurLineaire {
 
 	public void setCompteurCDivergents(int compteurCDivergents) {
 		this.compteurCDivergents = compteurCDivergents;
+	}
+
+	public long getTempsDiv() {
+		// TODO Auto-generated method stub
+		return this.tempsDiv;
 	}
 }
