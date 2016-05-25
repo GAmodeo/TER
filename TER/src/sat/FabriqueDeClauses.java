@@ -180,62 +180,7 @@ public class FabriqueDeClauses {
 		listeCourante.add(instanceJ.getNumeroSAT());
 		return J;
 	}
-	public ArrayList<ArrayList<Integer>> fabriquerReachableRapide(MSG msg2) {
-		int numeroBaseI=msg.getNbArcs()+msg.getNbInstances()+1;
-		int numeroBaseJ=msg.getNbArcs()+msg.getNbInstances()*2+1;
-		
-		ArrayList<ArrayList<Integer>> Reachable=new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> listeCourante;
-		
-		for(int k=0; k<msg.getNbInstances() ; k++ ){
-			Reachable.add(new ArrayList<Integer>());
-			listeCourante=Reachable.get(Reachable.size()-1);
-			
-			listeCourante.add(-(numeroBaseJ+k));
-			listeCourante.add(-msg.getInstances().get(k).getNumeroSAT());
-		}
-		Reachable.addAll(this.fabriquerReachable(msg2));
-		
-		return Reachable;
-	}
-	public ArrayList<ArrayList<Integer>> fabriquerDivergenceRapide(MSG msg2) {
-		int numeroBaseI=msg.getNbArcs()+msg.getNbInstances()+1;
-		int numeroBaseJ=msg.getNbArcs()+msg.getNbInstances()*2+1;
-		
-		ArrayList<ArrayList<Integer>> Divergence=new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> listeCourante;
-		
-		//1ere partie
-		for(int k=0; k<msg.getNbInstances() ; k++ ){
-			Divergence.add(new ArrayList<Integer>());
-			listeCourante=Divergence.get(Divergence.size()-1);	
-			
-			listeCourante.add(-(numeroBaseI+k));
-			listeCourante.add(-msg.getInstances().get(k).getNumeroSAT());
-		}
 
-		//2eme partie
-		
-		for(int k=0; k<msg.getNbInstances() ; k++ ){
-			for(int l=0; l<msg.getNbInstances() ; l++ ){
-				Divergence.add(new ArrayList<Integer>());
-				listeCourante=Divergence.get(Divergence.size()-1);
-				
-				listeCourante.add(-(numeroBaseI+k));
-				listeCourante.add(-(numeroBaseJ+l));
-				for(int a=0; a<msg.getNbArcs() ; a++ ){
-					Arc arcActuel=msg.getArcs().get(a);
-					
-					if(arcActuel.contient(msg.getInstances().get(k).getId(), msg.getInstances().get(l).getId())){
-						listeCourante.add(arcActuel.getNumero());
-					}
-				}
-			}
-		}
-			
-		
-		
-		return Divergence;
-	}
+
 
 }

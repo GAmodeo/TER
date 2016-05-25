@@ -26,6 +26,7 @@ public class SolveurLineaire {
 		this.modelesDivergence=new ArrayList<String>();
 		this.tempsDiv=0;
 		GLPK.glp_term_out(GLPK.GLP_OFF);
+		
 	}
 	
 	public ArrayList<String> verifierDivergence(){
@@ -37,10 +38,10 @@ public class SolveurLineaire {
 
         // Create problem
         lp = GLPK.glp_create_prob();
-       // System.out.println("Problem created");
         GLPK.glp_set_prob_name(lp, "myProblem");
 
         // Define columns
+        //ici on cree les variables associees aux arretes et aux instances
         definirColonnes(lp);
 
         // Create constraints
@@ -50,25 +51,23 @@ public class SolveurLineaire {
         //+1 car on commence a l'indice 1
         ind = GLPK.new_intArray(nbVars+1);
         val = GLPK.new_doubleArray(nbVars+1);
-            
-
+           
+        //ici on définit les contraintes communes a chacun des problemes pour tous les canaux
         definirLignes(ind,lp,val);
-            
-         
-        //maintenant on a la bas du pb on le defini pour chaque canal
+      
+        //maintenant on a la base du pb on le definit pour chaque canal
         for(Instance i : msg.getInstances()){
     		for(Instance j : msg.getInstances()){
     			if(i.getId()==j.getId())
     				continue;
     				glp_prob nouveauLp = GLPK.glp_create_prob();
-    				//ainsi on garde la premiere partie du pb et on en cree un nouveau
+    				//ainsi on garde la premiere partie du pb et on le complete
     				//pour chaque couple 
     				GLPK.glp_copy_prob(nouveauLp, lp, 0);
     				
-    				  // Define objective
     	            definirNouveauLp(nouveauLp,i,j);
-    				}
-    		} 
+    		}
+    	} 
 
     		this.tempsDiv=this.tempsDiv/1000000;
     		return modelesDivergence;
@@ -85,6 +84,8 @@ public class SolveurLineaire {
         ind = GLPK.new_intArray(nbVars+1);
         val = GLPK.new_doubleArray(nbVars+1);
 		
+        //ici on dit que le graphe de com du cycle selectionne contient une com de i vers j
+        //et que le cycle selectionne est non nul
 		definirContientActionij(ind,nouveauLp,val,i,j);
 		definirObjectif(nouveauLp);
 		
@@ -118,16 +119,14 @@ public class SolveurLineaire {
          // Free memory
          GLPK.delete_intArray(ind);
          GLPK.delete_doubleArray(val);
-         
-         
-         /*if(ret !=0)
-        	 System.exit(ret);*/
+
 
 	}
 
 	private void definirObjectif(glp_prob lp) {
         GLPK.glp_set_obj_name(lp, "zOBJ");
-        GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MIN);     
+      GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MIN); 
+     // GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MAX);
         for(Arc a : msg.getArcs())
             GLPK.glp_set_obj_coef(lp, a.getNumero(), 1);        		
 	}

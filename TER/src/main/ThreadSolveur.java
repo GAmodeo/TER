@@ -14,22 +14,16 @@ public class ThreadSolveur extends Thread{
 	SolveurLineaire SLN;
 	String vitesse;
 	
-	public ThreadSolveur(String mode,MSG msg,Solveur solveur,SolveurLineaire SLN,String vitesse){
-		this.mode=mode;this.msg=msg;this.solveur=solveur;this.SLN=SLN;this.vitesse=vitesse;
+	public ThreadSolveur(String mode,MSG msg,Solveur solveur,SolveurLineaire SLN){
+		this.mode=mode;this.msg=msg;this.solveur=solveur;this.SLN=SLN;
 	}
-	
+	//selon le mode on apelle la methode verifierDivergence du solveur sat ou du solveur en PLNE
 	public void run(){
 		if(mode.equals("SAT")){
-			if(vitesse.equals("rapide")){
-				String solution=solveur.verifierDivergenceRapide();
-				Main.ecrireSolutionDiv(solution,msg,solveur.getTempsRapide());
-				return;
-			}
 			long time1=System.nanoTime();
 			ArrayList<String> solutionsSAT=solveur.verifierDivergence();
 			long time2=System.nanoTime();
 			Main.ecrireSolutionDiv(solutionsSAT,msg,"SAT",(time2-time1)/1000000);
-			
 		}
 		else{
 			long time1=System.nanoTime();
