@@ -13,32 +13,101 @@
 		<MSC>
 			<id>2</id><listeActions>
 				<action type="emission">
-					<source>3</source>
-					<destination>2</destination>
-				</action>
-				<action type="reception">
-					<source>1</source>
+					<source>2</source>
 					<destination>3</destination>
 				</action>
 			</listeActions>
 			</MSC>
-	<MSC>
+		<MSC>
 			<id>3</id><listeActions>
 				<action type="emission">
-					<source>1</source>
-					<destination>2</destination>
-				</action>
-				<action>
 					<source>3</source>
-					<destination>1</destination></action>
-</listeActions>
+					<destination>4</destination>
+				</action>
+			</listeActions>
 			</MSC>
-	<MSC>
-		<id>4</id>
-		<listeActions>
-			<action type="emission">
-				<source>2</source>
-				<destination>1</destination></action></listeActions></MSC>
+		<MSC>
+			<id>4</id><listeActions>
+				<action type="emission">
+					<source>4</source>
+					<destination>5</destination>
+				</action>
+				<action type="emission">
+					<source>5</source>
+					<destination>4</destination>
+				</action>
+				<action type="emission">
+					<source>11</source>
+					<destination>7</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>5</id><listeActions>
+				<action type="emission">
+					<source>5</source>
+					<destination>6</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>6</id><listeActions>
+				<action type="emission">
+					<source>6</source>
+					<destination>7</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>7</id><listeActions>
+				<action type="emission">
+					<source>7</source>
+					<destination>8</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>8</id><listeActions>
+				<action type="emission">
+					<source>8</source>
+					<destination>9</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>9</id><listeActions>
+				<action type="emission">
+					<source>9</source>
+					<destination>10</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>10</id><listeActions>
+				<action type="emission">
+					<source>10</source>
+					<destination>11</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>11</id><listeActions>
+				<action type="emission">
+					<source>11</source>
+					<destination>12</destination>
+				</action>
+			</listeActions>
+			</MSC>
+		<MSC>
+			<id>12</id><listeActions>
+				<action type="emission">
+					<source>12</source>
+					<destination>13</destination>
+				</action>
+			</listeActions>
+			</MSC>
+
+
 	</listeMSC>
 	<listeArcs>
 		<arc>
@@ -49,10 +118,38 @@
 			<codomaine>3</codomaine></arc>
 		<arc>
 			<domaine>3</domaine>
-			<codomaine>1</codomaine></arc>
-		<arc>
-			<domaine>2</domaine>
 			<codomaine>4</codomaine></arc>
 		<arc>
 			<domaine>4</domaine>
-			<codomaine>1</codomaine></arc></listeArcs></MSG>
+			<codomaine>5</codomaine></arc>
+		<arc>
+			<domaine>5</domaine>
+			<codomaine>6</codomaine></arc>
+		<arc>
+			<domaine>6</domaine>
+			<codomaine>3</codomaine></arc>
+
+		<arc>
+			<domaine>4</domaine>
+			<codomaine>7</codomaine></arc>
+		<arc>
+			<domaine>7</domaine>
+			<codomaine>8</codomaine></arc>
+		<arc>
+			<domaine>8</domaine>
+			<codomaine>9</codomaine></arc>
+		<arc>
+			<domaine>9</domaine>
+			<codomaine>10</codomaine></arc>
+		<arc>
+			<domaine>10</domaine>
+			<codomaine>4</codomaine></arc>
+		<arc>
+			<domaine>7</domaine>
+			<codomaine>11</codomaine></arc>
+		<arc>
+			<domaine>11</domaine>
+			<codomaine>12</codomaine></arc>
+</listeArcs>
+
+</MSG>

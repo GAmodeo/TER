@@ -1,14 +1,15 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import pl.SolveurLineaire;
 import sat.Solveur;
 
+
 public class Main {
 
-	public static void main(String[] args)  {
-		// TODO Auto-generated method stub
+	public static void main(String[] args){
 		Parseur parseur=new Parseur(args[0]);
 		MSG msg=parseur.construireMSG();
 		
@@ -19,18 +20,25 @@ public class Main {
 		Solveur solveur=new Solveur(msg);
 		SolveurLineaire SLN=new SolveurLineaire(msg);
 		
-		//msg.show();
-		//solutionsSAT=solveur.verifierDivergence();	
-		//ecrireSolutionSATDiv(solutionsSAT,msg);ù			
-		//SLN.verifierDivergence();
 		
-		ThreadSolveur threadSAT=new ThreadSolveur("SAT",msg,solveur,SLN,"Nonrapide");
-		ThreadSolveur threadLN=new ThreadSolveur("LN",msg,solveur,SLN,"Nonrapide");
+		Scanner sc=new Scanner(System.in);
 		
+		System.out.println("afficher le MSG parsé ? (o/n)");
+		String rep=sc.nextLine();
+		if(rep.equals("o")){
+			msg.show();
+		}
+		
+		System.out.println("utiliser les deux solveurs : 0, sinon 1 pour SAT,2 pour PLNE");
+		rep=sc.nextLine();
+		
+		ThreadSolveur threadSAT=new ThreadSolveur("SAT",msg,solveur,SLN);
+		ThreadSolveur threadLN=new ThreadSolveur("LN",msg,solveur,SLN);
+		
+		if(!rep.equals(2))
 		threadSAT.start();
-		threadLN.start();
-
-	
+		if(!rep.equals(1))
+		threadLN.start();	
 	}
 
 
@@ -64,6 +72,21 @@ public class Main {
 						System.out.print(msg.getArcs().get(indice).getDomaine().getId()+" ");
 					}
 				}
+				
+				System.out.println();
+				System.out.print("                               "+"arcs du cycle :");
+				for(int indice=0 ; indice<msg.getNbArcs() ; indice++){
+					double vArc;
+					if(arg.equals("SAT")){
+						vArc=Integer.parseInt(vars[indice+2]);
+					}
+					else{
+						vArc=Double.parseDouble(vars[indice+2]);
+					}
+					if(vArc>0) {
+						System.out.print(msg.getArcs().get(indice).getNumero()+" ");
+					}
+				}
 				System.out.println();
 			}
 			System.out.println("**************************************");
@@ -71,14 +94,5 @@ public class Main {
 		}
 	}
 
-
-	public static void ecrireSolutionDiv(String solution, MSG msg, long tempsRapide) {
-		// TODO Auto-generated method stub
-		System.out.println("Solveur rapide SAT :temps de resolution : "+tempsRapide);
-		
-		if(solution.equals("oui")){
-			System.out.println("satisfiable");
-		}
-	}
 	
 }
